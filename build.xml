@@ -86,8 +86,17 @@
         <delete dir="target/${ant.project.name}/lib" includes="groovy*"/>
         <jar destfile="target/${ant.project.name}/lib/${ant.project.name}-${target.version}.jar">
             <fileset dir="target/classes" excludes="log4j.properties"/>
+            <restrict>
+                <name name="**/*.class"/>
+                <archives>
+                    <zips>
+                        <fileset dir="target/${ant.project.name}/lib" includes="**/*.jar"/>
+                    </zips>
+                </archives>
+            </restrict>
             <manifest>
                 <attribute name="Main-Class" value="org.mconf.UrlFixer"/>
+                <attribute name="Class-Path" value="."/>
             </manifest>
         </jar>
         <!--copy todir="target/${ant.project.name}/home/apps/vod">
