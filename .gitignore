@@ -2,3 +2,7 @@ libs/
 bin/
 target/
 maven/
+.gradle/
+.metadata/
+.settings/
+*~
