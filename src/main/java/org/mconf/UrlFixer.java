@@ -27,10 +27,16 @@ public class UrlFixer {
 		while ((s = in.readLine()) != null && s.length() != 0) {
 			try {
 				String prefix = s.substring(0, s.indexOf("/api/") + 5);
-				s = s.substring(prefix.length(), s.lastIndexOf("&checksum="));
-				String checksum = DigestUtils.sha1Hex(s.replaceFirst("[?]", "") + salt);
-				s = prefix + s + "&checksum=" + checksum;
-				System.out.println("=> " + s);
+				String params = s.substring(s.indexOf("?") + 1);
+				params = params.replaceAll("&checksum=[^&]*", "");
+				String method = s.substring(s.indexOf("/api/") + 5, s.indexOf("?"));
+				System.out.println("prefix !" + prefix + "!");
+				System.out.println("params !" + params + "!");
+				System.out.println("method !" + method + "!");
+				System.out.println("signing !" + method + params + salt + "!");
+				String checksum = DigestUtils.sha1Hex(method + params + salt);
+				String output = prefix + method + "?" + params + "&checksum=" + checksum;
+				System.out.println("=> " + output);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
